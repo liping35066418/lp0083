@@ -378,8 +378,7 @@ function updateSeatStatus(roomId, seatId, status, registrationId, name) {
 
 function getStatistics() {
   const totalSchedules = schedules.length;
-  const totalRegistrations = registrations.length;
-  const totalCapacity = rooms.reduce((sum, r) => sum + r.capacity, 0);
+  const totalRegistrations = schedules.reduce((sum, s) => sum + s.registered, 0);
   
   const scheduleStats = schedules.map(s => {
     const room = getRoomById(s.roomId);
@@ -396,6 +395,8 @@ function getStatistics() {
       status: s.status
     };
   }).sort((a, b) => b.percentage - a.percentage);
+  
+  const totalCapacity = scheduleStats.reduce((sum, s) => sum + s.capacity, 0);
   
   const roomStats = rooms.map(room => {
     const roomSchedules = schedules.filter(s => s.roomId === room.id);

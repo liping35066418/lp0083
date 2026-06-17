@@ -709,6 +709,16 @@ async function refreshAllData() {
     const schedules = await loadSchedules(dateFilter.value, roomFilter.value);
     renderScheduleList(schedules);
   }
+  
+  const activeTab = document.querySelector('.nav-tab.active');
+  if (activeTab && activeTab.dataset.tab === 'statistics') {
+    await loadStatistics();
+  }
+  
+  const adminTab = document.querySelector('.nav-tab.active');
+  if (adminTab && adminTab.dataset.tab === 'admin') {
+    await loadAdminData();
+  }
 }
 
 async function init() {
