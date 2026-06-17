@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学术会议排期与管控系统</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-container">
+  <header class="header">
+    <div class="header-content">
+      <h1 class="logo">🎓 学术会议排期管控系统</h1>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="overview">会场总览</button>
+        <button class="nav-tab" data-tab="schedule">会议排期</button>
+        <button class="nav-tab" data-tab="statistics">热度统计</button>
+        <button class="nav-tab" data-tab="admin">管理后台</button>
+      </nav>
+      <div class="header-right">
+        <span class="date-display" id="currentDate"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="tab-panel active" id="tab-overview">
+      <div class="overview-container">
+        <div class="floor-selector">
+          <h2>🏛️ 会场平面图</h2>
+          <div class="floor-buttons">
+            <button class="floor-btn active" data-floor="1">1楼 · 报告厅</button>
+            <button class="floor-btn" data-floor="2">2楼 · 研讨室</button>
+          </div>
+        </div>
+        
+        <div class="floor-plan" id="floorPlan">
+        </div>
+
+        <div class="legend-panel">
+          <h3>图例说明</h3>
+          <div class="legend-items">
+            <div class="legend-item"><span class="legend-color available"></span>可选座位</div>
+            <div class="legend-item"><span class="legend-color occupied"></span>已占座位</div>
+            <div class="legend-item"><span class="legend-color selected"></span>选中座位</div>
+            <div class="legend-item"><span class="legend-color aisle"></span>过道</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-info">
+        <div class="info-card">
+          <div class="info-icon">📅</div>
+          <div class="info-content">
+            <h3>今日会议</h3>
+            <p class="info-number" id="todayMeetings">0</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">👥</div>
+          <div class="info-content">
+            <h3>报名总人数</h3>
+            <p class="info-number" id="totalRegistrations">0</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🏢</div>
+          <div class="info-content">
+            <h3>会场数量</h3>
+            <p class="info-number" id="totalRooms">0</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">💺</div>
+          <div class="info-content">
+            <h3>总席位</h3>
+            <p class="info-number" id="totalSeats">0</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-schedule">
+      <div class="schedule-container">
+        <div class="schedule-header">
+          <h2>📅 学术排期</h2>
+          <div class="schedule-filters">
+            <input type="date" id="dateFilter" class="filter-input">
+            <select id="roomFilter" class="filter-input">
+              <option value="">全部会场</option>
+            </select>
+          </div>
+        </div>
+        <div class="schedule-list" id="scheduleList">
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-statistics">
+      <div class="statistics-container">
+        <h2>📊 报名热度统计</h2>
+        <div class="stats-summary">
+          <div class="stat-card">
+            <h3>总会议场次</h3>
+            <p class="stat-number" id="statTotalSched">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>总报名人数</h3>
+            <p class="stat-number" id="statTotalReg">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>总容量</h3>
+            <p class="stat-number" id="statTotalCap">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>整体上座率</h3>
+            <p class="stat-number" id="statRate">0%</p>
+          </div>
+        </div>
+        <div class="ranking-section">
+          <h3>🔥 热门会议排行</h3>
+          <div class="ranking-list" id="rankingList">
+          </div>
+        </div>
+        <div class="room-stats-section">
+          <h3>🏢 各会场统计</h3>
+          <div class="room-stats-grid" id="roomStatsGrid">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-admin">
+      <div class="admin-container">
+        <h2>⚙️ 管理后台</h2>
+        
+        <div class="admin-section">
+          <h3>➕ 增设临时研讨场次</h3>
+          <form class="add-schedule-form" id="addScheduleForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>会议标题</label>
+                <input type="text" name="title" required placeholder="请输入会议标题">
+              </div>
+              <div class="form-group">
+                <label>主讲人</label>
+                <input type="text" name="speaker" required placeholder="请输入主讲人姓名">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>所属单位</label>
+                <input type="text" name="speakerAffiliation" placeholder="请输入所属单位">
+              </div>
+              <div class="form-group">
+                <label>主题</label>
+                <input type="text" name="topic" placeholder="请输入会议主题">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>会场</label>
+                <select name="roomId" id="adminRoomSelect" required>
+                  <option value="">请选择会场</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>日期</label>
+                <input type="date" name="date" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>开始时间</label>
+                <input type="time" name="startTime" required>
+              </div>
+              <div class="form-group">
+                <label>结束时间</label>
+                <input type="time" name="endTime" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>会议描述</label>
+              <textarea name="description" rows="3" placeholder="请输入会议描述"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">➕ 添加临时场次</button>
+          </form>
+        </div>
+
+        <div class="admin-section">
+          <h3>🪑 座次调整</h3>
+          <div class="seat-admin-controls">
+            <select id="seatAdminRoom" class="filter-input">
+              <option value="">选择会场</option>
+            </select>
+            <span class="admin-hint">点击座位可切换状态（可用/占用）</span>
+          </div>
+          <div class="seat-admin-layout" id="seatAdminLayout">
+            <p class="placeholder-tip">请先选择会场查看座位布局</p>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <h3>📋 会议管理</h3>
+          <div class="admin-schedule-list" id="adminScheduleList">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="registerModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📝 会议报名</h3>
+      <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="meeting-info" id="meetingInfo">
+      </div>
+      <form class="register-form" id="registerForm">
+        <div class="form-group">
+          <label>姓名 *</label>
+          <input type="text" name="name" required placeholder="请输入您的姓名">
+        </div>
+        <div class="form-group">
+          <label>邮箱 *</label>
+          <input type="email" name="email" required placeholder="请输入您的邮箱">
+        </div>
+        <div class="form-group">
+          <label>所属单位</label>
+          <input type="text" name="affiliation" placeholder="请输入所属单位/机构">
+        </div>
+        <div class="form-group">
+          <label>研究方向 *</label>
+          <input type="text" name="researchDirection" required placeholder="请输入您的研究方向">
+        </div>
+        <button type="submit" class="btn-primary btn-block">✅ 确认报名</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="resultTitle">操作结果</h3>
+      <button class="modal-close" onclick="closeModal('resultModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="resultContent"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
